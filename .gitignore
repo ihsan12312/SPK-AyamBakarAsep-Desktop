@@ -1,0 +1,16 @@
+# NetBeans specific
+build/
+dist/
+nbproject/private/
+nbproject/Makefile-*.properties
+nbproject/Package-*.properties
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db

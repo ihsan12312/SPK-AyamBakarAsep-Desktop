@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NetBeans build.xml for Java Desktop Application -->
+<project name="SPK-AyamBakarAsep-Desktop" default="default" basedir=".">
+    <description>Builds, tests, and runs the project SPK-AyamBakarAsep-Desktop.</description>
+    <import file="nbproject/build-impl.xml"/>
+</project>
