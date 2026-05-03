@@ -100,4 +100,13 @@ public class HasilDAO {
         }
         return list;
     }
+    
+    /** Hitung total sesi yang ada di database */
+    public int countSesi() throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM tb_sesi");
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) return rs.getInt(1);
+        }
+        return 0;
+    }
 }

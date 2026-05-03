@@ -132,9 +132,12 @@ public class DataKriteriaPanel extends JPanel {
             }
             @Override protected void done() {
                 tblModel.setRowCount(0);
-                if (list != null) for (Kriteria k : list)
-                    tblModel.addRow(new Object[]{k.getIdKriteria(), k.getNamaKriteria(),
-                        k.isBenefit() ? "Benefit ↑" : "Cost ↓", String.format("%.2f", k.getBobot())});
+                if (list != null) {
+                    int i = 1;
+                    for (Kriteria k : list)
+                        tblModel.addRow(new Object[]{i++, k.getNamaKriteria(),
+                            k.isBenefit() ? "Benefit ↑" : "Cost ↓", String.format("%.2f", k.getBobot())});
+                }
                 boolean valid = Math.abs(total - 100) < 0.01;
                 lblTotal.setText("Total Bobot: " + String.format("%.2f", total) + "%  " + (valid ? "✓ Valid" : "⚠ Belum 100%"));
                 lblTotal.setForeground(valid ? GREEN_700 : RED_600);
@@ -159,11 +162,19 @@ public class DataKriteriaPanel extends JPanel {
         try {
             Kriteria k = new Kriteria();
             k.setNamaKriteria(nama);
-            k.setBobot(Double.parseDouble(bobotStr));
             k.setJenis((String) cbTipe.getSelectedItem());
             k.setSatuan("Poin");
+            double bobot = Double.parseDouble(bobotStr);
+            if (bobot < 0 || bobot > 100) {
+                JOptionPane.showMessageDialog(this, "Bobot harus antara 0 - 100%", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            k.setBobot(bobot);
             new KriteriaDAO().insert(k);
             clearForm(); refresh(); toast("Kriteria berhasil disimpan!");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Bobot harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         } catch (Exception ex) { JOptionPane.showMessageDialog(this, ex.getMessage()); }
     }
 
@@ -171,21 +182,61 @@ public class DataKriteriaPanel extends JPanel {
         int row = table.getSelectedRow();
         if (row < 0) { toast("Pilih baris terlebih dahulu!"); return; }
         Kriteria k = list.get(row);
+        String bobotStr = tfBobot.getText().trim();
         try {
+            double bobot = Double.parseDouble(bobotStr);
+            if (bobot < 0 || bobot > 100) {
+                JOptionPane.showMessageDialog(this, "Bobot harus antara 0 - 100%", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             k.setNamaKriteria(tfNama.getText().trim());
-            k.setBobot(Double.parseDouble(tfBobot.getText().trim()));
+            k.setBobot(bobot);
             k.setJenis((String) cbTipe.getSelectedItem());
             new KriteriaDAO().update(k); refresh(); toast("Kriteria diperbarui!");
-        } catch (Exception ex) { JOptionPane.showMessageDialog(this, ex.getMessage()); }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Bobot harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     private void doHapus() {
         int row = table.getSelectedRow();
         if (row < 0) { toast("Pilih baris terlebih dahulu!"); return; }
         Kriteria k = list.get(row);
-        if (JOptionPane.showConfirmDialog(this, "Hapus '" + k.getNamaKriteria() + "'?", "Konfirmasi", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            try { new KriteriaDAO().delete(k.getIdKriteria()); clearForm(); refresh(); toast("Dihapus!"); }
-            catch (SQLException ex) { JOptionPane.showMessageDialog(this, ex.getMessage()); }
+        
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Hapus kriteria '" + k.getNamaKriteria() + "'?\nSemua data penilaian terkait juga akan terhapus.", 
+            "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            
+        if (confirm == JOptionPane.YES_OPTION) {
+            new SwingWorker<Boolean, Void>() {
+                String errorMsg;
+                @Override protected Boolean doInBackground() throws Exception {
+                    try {
+                        new KriteriaDAO().delete(k.getIdKriteria());
+                        return true;
+                    } catch (SQLException ex) {
+                        errorMsg = ex.getMessage();
+                        return false;
+                    }
+                }
+                @Override protected void done() {
+                    try {
+                        if (get()) {
+                            clearForm();
+                            refresh();
+                            toast("Kriteria berhasil dihapus!");
+                        } else {
+                            JOptionPane.showMessageDialog(DataKriteriaPanel.this, 
+                                "Gagal menghapus: " + errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(DataKriteriaPanel.this, 
+                            "Terjadi kesalahan: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }.execute();
         }
     }
 

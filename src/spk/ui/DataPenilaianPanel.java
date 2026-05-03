@@ -213,14 +213,40 @@ public class DataPenilaianPanel extends JPanel {
 
     private void doSimpan() {
         Alternatif a = (Alternatif) cbMenu.getSelectedItem();
-        if (a == null) { toast("Pilih menu paket terlebih dahulu!"); return; }
-        try {
-            Map<Integer, Double> m = new LinkedHashMap<>();
-            for (Map.Entry<Integer, JComboBox<Integer>> en : inputMap.entrySet())
-                m.put(en.getKey(), ((Integer) en.getValue().getSelectedItem()).doubleValue());
-            new AlternatifDAO().saveNilaiBatch(a.getIdAlternatif(), m);
-            refresh(); toast("Nilai berhasil disimpan!");
-        } catch (Exception ex) { JOptionPane.showMessageDialog(this, ex.getMessage()); }
+        if (a == null) { toast("Pilih menu terlebih dahulu!"); return; }
+        
+        Map<Integer, Double> m = new HashMap<>();
+        for (Kriteria k : kritList) {
+            JComboBox<Integer> cb = inputMap.get(k.getIdKriteria());
+            if (cb != null) m.put(k.getIdKriteria(), (double)(int)cb.getSelectedItem());
+        }
+        
+        new SwingWorker<Boolean, Void>() {
+            String errorMsg;
+            @Override protected Boolean doInBackground() throws Exception {
+                try {
+                    new AlternatifDAO().saveNilaiBatch(a.getIdAlternatif(), m);
+                    return true;
+                } catch (SQLException ex) {
+                    errorMsg = ex.getMessage();
+                    return false;
+                }
+            }
+            @Override protected void done() {
+                try {
+                    if (get()) {
+                        toast("Penilaian '" + a.getNamaPaket() + "' berhasil disimpan!");
+                        refresh();
+                    } else {
+                        JOptionPane.showMessageDialog(DataPenilaianPanel.this, 
+                            "Gagal menyimpan: " + errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(DataPenilaianPanel.this, 
+                        "Terjadi kesalahan: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }.execute();
     }
 
     private void doHapus() {

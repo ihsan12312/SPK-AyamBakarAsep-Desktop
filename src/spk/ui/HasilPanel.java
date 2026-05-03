@@ -253,8 +253,9 @@ public class HasilPanel extends JPanel {
                 try {
                     KriteriaDAO kDao = new KriteriaDAO(); AlternatifDAO aDao = new AlternatifDAO();
                     List<Kriteria> krits = kDao.getAll(); List<Alternatif> alts = aDao.getAllWithNilai();
-                    double tb = kDao.getTotalBobot();
-                    if (Math.abs(tb - 100) > 0.01) throw new IllegalStateException("Total bobot = " + String.format("%.2f",tb) + "%. Harus 100%!");
+                    // Validation for 100% weight removed as requested by user
+                    // double tb = kDao.getTotalBobot();
+                    // if (Math.abs(tb - 100) > 0.01) throw new IllegalStateException("Total bobot = " + String.format("%.2f",tb) + "%. Harus 100%!");
                     if (alts.size() < 2) throw new IllegalStateException("Minimal 2 alternatif!");
                     List<HasilSAW> hasil = SAWCalculator.hitung(alts, krits);
                     new HasilDAO().simpanHasil(hasil, cat.isEmpty() ? "Perhitungan SAW" : cat);
@@ -280,7 +281,7 @@ public class HasilPanel extends JPanel {
         lblWName.setText(best.getAlternatif().getNamaPaket());
         lblWScore.setText(best.getSkorFormatted());
         String desc = best.getAlternatif().getDeskripsi();
-        lblWHarga.setText(best.getAlternatif().getHargaFormatted() + (desc != null && !desc.isEmpty() ? "  •  " + desc : ""));
+        lblWHarga.setText(best.getAlternatif().getHargaFormatted() + (desc != null && !desc.isEmpty() ? "  \u2022  " + desc : ""));
         rankModel.setRowCount(0);
         String[] medali = {"🥇","🥈","🥉"};
         for (HasilSAW h : hasil) {

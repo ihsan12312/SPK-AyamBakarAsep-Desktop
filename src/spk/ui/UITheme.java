@@ -3,8 +3,8 @@ package spk.ui;
 import java.awt.*;
 
 /**
- * UITheme.java – Premium Design System
- * Modern dark + vibrant accent color palette
+ * UITheme.java – Premium Design System (Maroon Edition)
+ * Modern dark + vibrant Maroon accent color palette
  */
 public final class UITheme {
 
@@ -23,23 +23,33 @@ public final class UITheme {
     public static final Color DARK_600 = SLATE_500;
 
     // ── Page / Card Backgrounds ──────────────────────────────────
-    public static final Color BG_PAGE  = new Color(0xF0F4FF);
+    public static final Color BG_PAGE  = new Color(0xFFF5F5); // Nuansa merah sangat muda
     public static final Color BG_CARD  = Color.WHITE;
 
-    // ── Indigo / Primary Brand ───────────────────────────────────
-    public static final Color INDIGO_900 = new Color(0x312E81);
-    public static final Color INDIGO_800 = new Color(0x3730A3);
-    public static final Color INDIGO_700 = new Color(0x4338CA);
-    public static final Color INDIGO_600 = new Color(0x4F46E5);
-    public static final Color INDIGO_500 = new Color(0x6366F1);
-    public static final Color INDIGO_100 = new Color(0xE0E7FF);
-    public static final Color INDIGO_50  = new Color(0xEEF2FF);
+    // ── Maroon / Primary Brand (#610000) ──────────────────────────
+    // Mengganti semua Indigo menjadi variasi Maroon
+    public static final Color MAROON_900 = new Color(0x3D0000); 
+    public static final Color MAROON_800 = new Color(0x4D0000); 
+    public static final Color MAROON_700 = new Color(0x610000); // Warna utama Anda
+    public static final Color MAROON_600 = new Color(0x800000); 
+    public static final Color MAROON_500 = new Color(0xA52A2A); 
+    public static final Color MAROON_100 = new Color(0xFFEAEA); 
+    public static final Color MAROON_50  = new Color(0xFFF5F5); 
 
-    public static final Color PRIMARY_800 = INDIGO_800;
-    public static final Color PRIMARY_700 = INDIGO_700;
-    public static final Color PRIMARY_600 = INDIGO_600;
-    public static final Color PRIMARY_500 = INDIGO_500;
-    public static final Color PRIMARY_100 = INDIGO_100;
+    // Aliases agar komponen yang memanggil INDIGO/PRIMARY otomatis berubah
+    public static final Color INDIGO_900 = MAROON_900;
+    public static final Color INDIGO_800 = MAROON_800;
+    public static final Color INDIGO_700 = MAROON_700;
+    public static final Color INDIGO_600 = MAROON_600;
+    public static final Color INDIGO_500 = MAROON_500;
+    public static final Color INDIGO_100 = MAROON_100;
+    public static final Color INDIGO_50  = MAROON_50;
+
+    public static final Color PRIMARY_800 = MAROON_800;
+    public static final Color PRIMARY_700 = MAROON_700;
+    public static final Color PRIMARY_600 = MAROON_600;
+    public static final Color PRIMARY_500 = MAROON_500;
+    public static final Color PRIMARY_100 = MAROON_100;
 
     // ── Rose / Danger Palette ────────────────────────────────────
     public static final Color ROSE_700 = new Color(0xBE123C);
@@ -47,15 +57,15 @@ public final class UITheme {
     public static final Color ROSE_500 = new Color(0xF43F5E);
     public static final Color ROSE_100 = new Color(0xFFE4E6);
 
-    // Compatibility aliases (replacing Red with Indigo/Rose)
-    public static final Color RED_800  = ROSE_700; // Danger should stay reddish
+    // Compatibility aliases
+    public static final Color RED_800  = ROSE_700; 
     public static final Color RED_700  = ROSE_700;
     public static final Color RED_600  = ROSE_600;
     public static final Color RED_500  = ROSE_500;
     public static final Color RED_100  = ROSE_100;
 
-    // ── Accent Colors ────────────────────────────────────────────
-    public static final Color GOLD     = new Color(0xF59E0B);
+    // ── Accent Colors (Restored for Dashboard compatibility) ─────
+    public static final Color GOLD       = new Color(0xF59E0B);
     public static final Color GOLD_LIGHT = new Color(0xFDE68A);
 
     public static final Color GREEN_800 = new Color(0x065F46);
@@ -63,8 +73,8 @@ public final class UITheme {
     public static final Color GREEN_600 = new Color(0x059669);
     public static final Color GREEN_100 = new Color(0xD1FAE5);
 
-    public static final Color BLUE_800  = new Color(0x1E3A8A);
-    public static final Color BLUE_700  = new Color(0x1D4ED8);
+    public static final Color BLUE_800  = MAROON_800; // Diarahkan ke Maroon agar senada
+    public static final Color BLUE_700  = MAROON_700;
     public static final Color BLUE_600  = new Color(0x2563EB);
     public static final Color BLUE_100  = new Color(0xDBEAFE);
 
@@ -96,13 +106,12 @@ public final class UITheme {
     public static void polish(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,      RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING,         RenderingHints.VALUE_RENDER_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,     RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING,          RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,      RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     }
 
     /** Soft multi-layer drop shadow */
     public static void drawShadow(Graphics2D g2, int x, int y, int w, int h, int r) {
-        // Softer, more elegant multi-layered shadow
         Color[] shadowColors = {
             new Color(0, 0, 0, 10),
             new Color(0, 0, 0, 15),

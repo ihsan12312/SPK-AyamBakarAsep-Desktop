@@ -210,8 +210,8 @@ public class LaporanPanel extends JPanel {
             html.append("</td>");
             html.append("<td align=\"center\">");
             html.append("<font size=\"6\"><b>AYAM BAKAR ASEP</b></font><br>");
-            html.append("<font size=\"4\">Jl. Lestari No.23E, RT.4/RW.3, Kalisari, Kec. Ps. Rebo</font><br>");
-            html.append("<font size=\"4\">Kota Jakarta Timur, DKI Jakarta 13790. Bpk. Asep : +62 812-3456-7890</font>");
+            html.append("<font size=\"4\">Jl. Margasatwa Raya No.8, RT.4/RW.3, Pd. Labu, Kec. Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12450</font><br>");
+            html.append("<font size=\"4\">Kota Jakarta Selatan, DKI Jakarta 13790. Ibu. Ika : +62 812-8444-5675</font>");
             html.append("</td>");
             html.append("</tr>");
             html.append("</table>");

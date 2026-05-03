@@ -29,7 +29,10 @@ public class AlternatifDAO {
     public List<Alternatif> getAllWithNilai() throws SQLException {
         List<Alternatif> list = getAll();
         Map<Integer, Map<Integer, Double>> nilaiIndex = new HashMap<>();
-        try (PreparedStatement ps = conn.prepareStatement("SELECT id_alternatif,id_kriteria,nilai FROM tb_nilai");
+        try (PreparedStatement ps = conn.prepareStatement(
+                "SELECT n.id_alternatif, n.id_kriteria, n.nilai " +
+                "FROM tb_nilai n JOIN tb_alternatif a ON n.id_alternatif = a.id_alternatif " +
+                "WHERE a.is_active = 1");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 int ai = rs.getInt("id_alternatif"), ki = rs.getInt("id_kriteria");

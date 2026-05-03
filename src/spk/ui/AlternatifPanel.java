@@ -166,11 +166,41 @@ public class AlternatifPanel extends JPanel {
     }
 
     private void doHapus() {
-        int row = table.getSelectedRow(); if (row < 0) { toast("Pilih paket!"); return; }
+        int row = table.getSelectedRow();
+        if (row < 0) { toast("Pilih paket!"); return; }
         Alternatif a = altList.get(row);
-        if (JOptionPane.showConfirmDialog(this,"Hapus '"+a.getNamaPaket()+"'?","Konfirmasi",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            try { new AlternatifDAO().delete(a.getIdAlternatif()); refresh(); toast("Dihapus!"); }
-            catch (SQLException ex) { JOptionPane.showMessageDialog(this, ex.getMessage()); }
+        
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Hapus paket menu '" + a.getNamaPaket() + "'?\nData penilaian terkait paket ini juga akan dihapus.", 
+            "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            
+        if (confirm == JOptionPane.YES_OPTION) {
+            new SwingWorker<Boolean, Void>() {
+                String errorMsg;
+                @Override protected Boolean doInBackground() throws Exception {
+                    try {
+                        new AlternatifDAO().delete(a.getIdAlternatif());
+                        return true;
+                    } catch (SQLException ex) {
+                        errorMsg = ex.getMessage();
+                        return false;
+                    }
+                }
+                @Override protected void done() {
+                    try {
+                        if (get()) {
+                            refresh();
+                            toast("Paket menu berhasil dihapus!");
+                        } else {
+                            JOptionPane.showMessageDialog(AlternatifPanel.this, 
+                                "Gagal menghapus: " + errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(AlternatifPanel.this, 
+                            "Terjadi kesalahan: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }.execute();
         }
     }
 }

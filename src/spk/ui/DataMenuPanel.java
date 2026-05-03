@@ -179,9 +179,39 @@ public class DataMenuPanel extends JPanel {
         int row = table.getSelectedRow();
         if (row < 0) { toast("Pilih baris terlebih dahulu!"); return; }
         Alternatif a = altList.get(row);
-        if (JOptionPane.showConfirmDialog(this, "Hapus '" + a.getNamaPaket() + "'?", "Konfirmasi", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            try { new AlternatifDAO().delete(a.getIdAlternatif()); clearForm(); refresh(); toast("Dihapus!"); }
-            catch (SQLException ex) { JOptionPane.showMessageDialog(this, ex.getMessage()); }
+        
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Hapus paket menu '" + a.getNamaPaket() + "'?\nData penilaian terkait menu ini juga akan dihapus.", 
+            "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            
+        if (confirm == JOptionPane.YES_OPTION) {
+            new SwingWorker<Boolean, Void>() {
+                String errorMsg;
+                @Override protected Boolean doInBackground() throws Exception {
+                    try {
+                        new AlternatifDAO().delete(a.getIdAlternatif());
+                        return true;
+                    } catch (SQLException ex) {
+                        errorMsg = ex.getMessage();
+                        return false;
+                    }
+                }
+                @Override protected void done() {
+                    try {
+                        if (get()) {
+                            clearForm();
+                            refresh();
+                            toast("Paket menu berhasil dihapus!");
+                        } else {
+                            JOptionPane.showMessageDialog(DataMenuPanel.this, 
+                                "Gagal menghapus: " + errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(DataMenuPanel.this, 
+                            "Terjadi kesalahan: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }.execute();
         }
     }
 

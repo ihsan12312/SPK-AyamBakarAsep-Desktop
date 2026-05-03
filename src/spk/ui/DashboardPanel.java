@@ -77,7 +77,7 @@ public class DashboardPanel extends JPanel {
                     nA = new AlternatifDAO().getAll().size();
                     tb = new KriteriaDAO().getTotalBobot();
                     riwayat = new HasilDAO().getRiwayatSesi(10);
-                    nS = riwayat.size();
+                    nS = new HasilDAO().countSesi();
                 } catch (SQLException ex) { ex.printStackTrace(); }
                 return null;
             }

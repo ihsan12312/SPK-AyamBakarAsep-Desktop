@@ -2,6 +2,8 @@ package spk.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Alternatif.java
@@ -25,9 +27,6 @@ public class Alternatif {
         this.harga = harga; this.isActive = active;
     }
 
-    public Alternatif(int aInt, String string, String string0, int aInt0, boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
     public int    getIdAlternatif()                       { return idAlternatif; }
     public void   setIdAlternatif(int v)                  { this.idAlternatif = v; }
@@ -45,9 +44,24 @@ public class Alternatif {
     public void   setNilaiMap(Map<Integer,Double> m)      { this.nilaiMap = m; }
     public double getNilai(int idKriteria)                { return nilaiMap.getOrDefault(idKriteria, 0.0); }
     public void   setNilai(int idKriteria, double nilai)  { nilaiMap.put(idKriteria, nilai); }
+
+    /**
+     * Mengembalikan harga dalam format mata uang Rupiah (contoh: Rp 15.000).
+     * @return String harga terformat
+     */
+    public String getHargaFormatted() {
+        if (harga == null || harga.isEmpty()) return "Rp 0";
+        try {
+            String clean = harga.replaceAll("[^0-9]", "");
+            if (clean.isEmpty()) return "Rp " + harga;
+            
+            double val = Double.parseDouble(clean);
+            NumberFormat nf = NumberFormat.getInstance(new Locale("id", "ID"));
+            return "Rp " + nf.format(val);
+        } catch (Exception e) {
+            return "Rp " + harga;
+        }
+    }
     @Override public String toString() { return namaPaket; }
 
-    public Object getHargaFormatted() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

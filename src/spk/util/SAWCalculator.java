@@ -37,7 +37,7 @@ public class SAWCalculator {
         double[] ref = new double[m];
         for (int j = 0; j < m; j++) {
             boolean isBenefit = crits.get(j).isBenefit();
-            ref[j] = isBenefit ? Double.MIN_VALUE : Double.MAX_VALUE;
+            ref[j] = isBenefit ? 0.0 : Double.MAX_VALUE;
             for (int i = 0; i < n; i++) {
                 if (isBenefit) { if (X[i][j] > ref[j]) ref[j] = X[i][j]; }
                 else           { if (X[i][j] < ref[j]) ref[j] = X[i][j]; }

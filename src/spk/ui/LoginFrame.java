@@ -366,8 +366,6 @@ public class LoginFrame extends JFrame {
 
         // 1. Coba file absolut / relatif langsung
         String[] paths = {
-            "c:/Users/ACER/Desktop/diki dkik/SPK-AyamBakarAsep-Desktop/src/resources/logo.png",
-            "c:/Users/ACER/Desktop/diki dkik/SPK-AyamBakarAsep-Desktop/build/classes/resources/logo.png",
             "src/resources/logo.png",
             "build/classes/resources/logo.png"
         };
@@ -396,7 +394,7 @@ public class LoginFrame extends JFrame {
         java.awt.image.BufferedImage scaled = new java.awt.image.BufferedImage(
             size, size, java.awt.image.BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2s = scaled.createGraphics();
-        g2s.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2s.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         g2s.setRenderingHint(RenderingHints.KEY_ANTIALIASING,  RenderingHints.VALUE_ANTIALIAS_ON);
         g2s.setRenderingHint(RenderingHints.KEY_RENDERING,     RenderingHints.VALUE_RENDER_QUALITY);
         g2s.drawImage(src, 0, 0, size, size, null);
