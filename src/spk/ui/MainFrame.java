@@ -143,37 +143,46 @@ public class MainFrame extends JFrame {
             }
         };
         brand.setOpaque(false);
+        // Vertical layout: logo on left (large), text on right
         brand.setLayout(new BorderLayout(12, 0));
-        brand.setBorder(new EmptyBorder(18, 18, 18, 14));
-        brand.setMaximumSize(new Dimension(260, 90));
-        brand.setMinimumSize(new Dimension(260, 90));
-        brand.setPreferredSize(new Dimension(260, 90));
+        brand.setBorder(new EmptyBorder(16, 14, 16, 14));
+        brand.setMaximumSize(new Dimension(260, 130));
+        brand.setMinimumSize(new Dimension(260, 130));
+        brand.setPreferredSize(new Dimension(260, 130));
 
-        Image logoImg = LoginFrame.loadLogo(46);
+        // Load at 2x size (160px) for crisp rendering at 80px display size
+        Image logoImg = LoginFrame.loadLogo(160);
         JLabel iconLbl = new JLabel() {
             @Override protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g; UITheme.polish(g2);
                 int sz = getWidth();
                 if (logoImg != null) {
                     Shape cl = g2.getClip();
-                    g2.setClip(new java.awt.geom.Ellipse2D.Double(0,0,sz,sz));
-                    g2.drawImage(logoImg, 0,0,sz,sz,this);
+                    // Clip to circle
+                    g2.setClip(new java.awt.geom.Ellipse2D.Double(0, 0, sz, sz));
+                    g2.drawImage(logoImg, 0, 0, sz, sz, this);
                     g2.setClip(cl);
+                    // White ring border
+                    g2.setColor(new Color(255, 255, 255, 130));
+                    g2.setStroke(new java.awt.BasicStroke(2.5f));
+                    g2.drawOval(1, 1, sz - 2, sz - 2);
                 } else {
-                    g2.setColor(new Color(255,255,255,25)); g2.fillOval(0,0,sz,sz);
-                    g2.setFont(fontBold(16)); g2.setColor(Color.WHITE);
+                    GradientPaint gp = new GradientPaint(0,0,INDIGO_600,sz,sz,INDIGO_800);
+                    g2.setPaint(gp); g2.fillOval(0,0,sz,sz);
+                    g2.setFont(fontBold(24)); g2.setColor(Color.WHITE);
                     FontMetrics fm = g2.getFontMetrics();
                     String t = "AB";
                     g2.drawString(t, (sz-fm.stringWidth(t))/2, sz/2+fm.getAscent()/2-3);
                 }
             }
-            @Override public Dimension getPreferredSize() { return new Dimension(46,46); }
-            @Override public Dimension getMinimumSize()   { return new Dimension(46,46); }
-            @Override public Dimension getMaximumSize()   { return new Dimension(46,46); }
+            // 80×80px display size
+            @Override public Dimension getPreferredSize() { return new Dimension(80, 80); }
+            @Override public Dimension getMinimumSize()   { return new Dimension(80, 80); }
+            @Override public Dimension getMaximumSize()   { return new Dimension(80, 80); }
         };
 
-        JPanel brandText = new JPanel(new GridLayout(2,1,0,3)); brandText.setOpaque(false);
-        JLabel b1 = new JLabel("Ayam Bakar Asep"); b1.setFont(fontBold(14)); b1.setForeground(Color.WHITE);
+        JPanel brandText = new JPanel(new GridLayout(2,1,0,4)); brandText.setOpaque(false);
+        JLabel b1 = new JLabel("Ayam Bakar Asep"); b1.setFont(fontBold(13)); b1.setForeground(Color.WHITE);
         JLabel b2 = new JLabel("SPK Metode SAW");  b2.setFont(fontPlain(11)); b2.setForeground(new Color(255,255,255,150));
         brandText.add(b1); brandText.add(b2);
         brand.add(iconLbl, BorderLayout.WEST);
@@ -246,7 +255,8 @@ public class MainFrame extends JFrame {
                 g2.setFont(getFont()); g2.setColor(getForeground());
                 FontMetrics fm = g2.getFontMetrics();
                 int y = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
-                g2.drawString(getText(), 22, y);
+                // x=14 agar rata kiri sejajar dengan tepi logo (brand padding=14)
+                g2.drawString(getText(), 14, y);
             }
         };
         btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -265,10 +275,13 @@ public class MainFrame extends JFrame {
     }
 
     private void addNavSection(JPanel p, String text) {
-        JLabel lbl = new JLabel("  " + text);
-        lbl.setFont(fontBold(9)); lbl.setForeground(DARK_600);
-        lbl.setMaximumSize(new Dimension(320, 28));
-        lbl.setBorder(new EmptyBorder(10, 18, 2, 0));
+        JLabel lbl = new JLabel(text);
+        lbl.setFont(new Font("Segoe UI", Font.BOLD, 9));
+        lbl.setForeground(new Color(255, 255, 255, 90));
+        lbl.setMaximumSize(new Dimension(260, 28));
+        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // left=14px agar rata kiri sejajar dengan nav button (x=14) dan tepi logo
+        lbl.setBorder(new EmptyBorder(12, 14, 3, 0));
         p.add(lbl);
     }
 

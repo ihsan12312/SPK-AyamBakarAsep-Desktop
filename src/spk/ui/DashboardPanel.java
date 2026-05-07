@@ -84,7 +84,7 @@ public class DashboardPanel extends JPanel {
             @Override protected void done() {
                 lblKrit.setText(String.valueOf(nK));
                 lblAlt.setText(String.valueOf(nA));
-                lblBobot.setText(String.format("%.0f%%", tb));
+                lblBobot.setText(String.format("%.4f", tb));  // format desimal (misal: 0.2800)
                 lblSesi.setText(String.valueOf(nS));
                 tblModel.setRowCount(0);
                 if (riwayat != null) {

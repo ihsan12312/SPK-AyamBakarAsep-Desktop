@@ -71,13 +71,27 @@ public class AlternatifDAO {
     }
 
     public void saveNilaiBatch(int idAlt, Map<Integer, Double> nilaiMap) throws SQLException {
-        String sql = "INSERT INTO tb_nilai(id_alternatif,id_kriteria,nilai) VALUES(?,?,?) ON DUPLICATE KEY UPDATE nilai=VALUES(nilai)";
         conn.setAutoCommit(false);
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            for (Map.Entry<Integer,Double> e : nilaiMap.entrySet()) {
-                ps.setInt(1,idAlt); ps.setInt(2,e.getKey()); ps.setDouble(3,e.getValue()); ps.addBatch();
+        try {
+            if (nilaiMap == null || nilaiMap.isEmpty()) {
+                // Bug fix: empty map = hapus semua nilai untuk alternatif ini
+                try (PreparedStatement ps = conn.prepareStatement(
+                        "DELETE FROM tb_nilai WHERE id_alternatif=?")) {
+                    ps.setInt(1, idAlt);
+                    ps.executeUpdate();
+                }
+            } else {
+                String sql = "INSERT INTO tb_nilai(id_alternatif,id_kriteria,nilai) VALUES(?,?,?) " +
+                             "ON DUPLICATE KEY UPDATE nilai=VALUES(nilai)";
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    for (Map.Entry<Integer,Double> e : nilaiMap.entrySet()) {
+                        ps.setInt(1,idAlt); ps.setInt(2,e.getKey()); ps.setDouble(3,e.getValue());
+                        ps.addBatch();
+                    }
+                    ps.executeBatch();
+                }
             }
-            ps.executeBatch(); conn.commit();
+            conn.commit();
         } catch (SQLException e) { conn.rollback(); throw e; }
         finally { conn.setAutoCommit(true); }
     }

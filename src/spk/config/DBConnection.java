@@ -33,7 +33,7 @@ public class DBConnection {
         }
     }
 
-    public static DBConnection getInstance() {
+    public static synchronized DBConnection getInstance() {
         try {
             if (instance == null || instance.connection.isClosed()) {
                 instance = new DBConnection();

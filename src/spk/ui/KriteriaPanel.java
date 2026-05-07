@@ -100,19 +100,19 @@ public class KriteriaPanel extends JPanel {
                     for (Kriteria k : list)
                         tblModel.addRow(new Object[]{i++, k.getNamaKriteria(),
                             k.isBenefit() ? "Benefit ↑" : "Cost ↓",
-                            String.format("%.2f", k.getBobot()), k.getSatuan(),
+                            String.format("%.4f", k.getBobot()), k.getSatuan(),
                             k.getKeterangan() != null ? k.getKeterangan() : "–"});
                 }
-                boolean valid = Math.abs(tb - 100) < 0.01;
-                lblBobot.setText("  Total Bobot: " + String.format("%.2f", tb) + "%   " + (valid ? "Valid" : "Belum 100%"));
-                lblBobot.setForeground(valid ? GREEN_700 : RED_600);
+                boolean valid = Math.abs(tb - 1) < 0.0001;
+                lblBobot.setText("  Total Bobot: " + String.format("%.4f", tb) + "   " + (valid ? "✓ Tepat 1.0" : "(bebas)"));
+                lblBobot.setForeground(tb > 0 ? GREEN_700 : RED_600);
             }
         }.execute();
     }
 
     private void showTambah() {
         JDialog d = dialog("Tambah Kriteria", 440, 370);
-        JTextField tNama = tf(), tBobot = tf("0"), tSatuan = tf("Poin"), tKet = tf();
+        JTextField tNama = tf(), tBobot = tf("0.00"), tSatuan = tf("Poin"), tKet = tf();
         JComboBox<String> cbJenis = new JComboBox<>(new String[]{"benefit","cost"});
         cbJenis.setFont(fontPlain(13));
         JPanel form = form(); addRow(form,"Nama Kriteria",tNama); addRow(form,"Jenis",cbJenis);

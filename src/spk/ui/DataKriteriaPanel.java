@@ -86,7 +86,7 @@ public class DataKriteriaPanel extends JPanel {
         formCard.setMaximumSize(new Dimension(Integer.MAX_VALUE, 270));
 
         // ── Table ─────────────────────────────────────────────────
-        String[] cols = {"ID","Nama Kriteria","Tipe","Bobot (%)"};
+        String[] cols = {"No","Nama Kriteria","Tipe","Bobot"};
         tblModel = new DefaultTableModel(cols, 0) { @Override public boolean isCellEditable(int r, int c) { return false; } };
         table = styledTable(tblModel);
         table.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -136,11 +136,11 @@ public class DataKriteriaPanel extends JPanel {
                     int i = 1;
                     for (Kriteria k : list)
                         tblModel.addRow(new Object[]{i++, k.getNamaKriteria(),
-                            k.isBenefit() ? "Benefit ↑" : "Cost ↓", String.format("%.2f", k.getBobot())});
+                            k.isBenefit() ? "Benefit ↑" : "Cost ↓", String.format("%.4f", k.getBobot())});
                 }
-                boolean valid = Math.abs(total - 100) < 0.01;
-                lblTotal.setText("Total Bobot: " + String.format("%.2f", total) + "%  " + (valid ? "✓ Valid" : "⚠ Belum 100%"));
-                lblTotal.setForeground(valid ? GREEN_700 : RED_600);
+                boolean valid = Math.abs(total - 1) < 0.0001;
+                lblTotal.setText("Total Bobot: " + String.format("%.4f", total) + "  " + (valid ? "✓ Tepat 1.0" : "(bebas)"));
+                lblTotal.setForeground(total > 0 ? GREEN_700 : RED_600);
             }
         }.execute();
     }
@@ -165,8 +165,8 @@ public class DataKriteriaPanel extends JPanel {
             k.setJenis((String) cbTipe.getSelectedItem());
             k.setSatuan("Poin");
             double bobot = Double.parseDouble(bobotStr);
-            if (bobot < 0 || bobot > 100) {
-                JOptionPane.showMessageDialog(this, "Bobot harus antara 0 - 100%", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            if (bobot <= 0) {
+                JOptionPane.showMessageDialog(this, "Bobot harus lebih dari 0 (contoh: 0.03 atau 0.25)", "Peringatan", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             k.setBobot(bobot);
@@ -185,8 +185,8 @@ public class DataKriteriaPanel extends JPanel {
         String bobotStr = tfBobot.getText().trim();
         try {
             double bobot = Double.parseDouble(bobotStr);
-            if (bobot < 0 || bobot > 100) {
-                JOptionPane.showMessageDialog(this, "Bobot harus antara 0 - 100%", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            if (bobot <= 0) {
+                JOptionPane.showMessageDialog(this, "Bobot harus lebih dari 0 (contoh: 0.03 atau 0.25)", "Peringatan", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             k.setNamaKriteria(tfNama.getText().trim());

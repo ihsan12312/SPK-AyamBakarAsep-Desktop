@@ -33,7 +33,7 @@ public class Kriteria {
     public void   setSatuan(String v)        { this.satuan = v; }
     public String getKeterangan()            { return keterangan; }
     public void   setKeterangan(String v)    { this.keterangan = v; }
-    public double getBobotDesimal()          { return bobot / 100.0; }
+    public double getBobotDesimal()          { return bobot; }  // bobot sudah dalam format desimal (misal: 0.25, 0.03)
     public boolean isBenefit()               { return "benefit".equalsIgnoreCase(jenis); }
 
     @Override public String toString()       { return namaKriteria; }

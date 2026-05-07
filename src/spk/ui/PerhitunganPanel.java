@@ -118,7 +118,7 @@ public class PerhitunganPanel extends JPanel {
                     KriteriaDAO kDao = new KriteriaDAO(); AlternatifDAO aDao = new AlternatifDAO();
                     lastKrit = kDao.getAll(); lastAlts = aDao.getAllWithNilai();
                     double tb = kDao.getTotalBobot();
-                    if (Math.abs(tb - 100) > 0.01) throw new IllegalStateException("Total bobot = " + String.format("%.2f", tb) + "%. Harus 100%!");
+                    // Validasi total bobot tidak diwajibkan — bobot bebas (desimal)
                     if (lastAlts.size() < 2) throw new IllegalStateException("Minimal 2 alternatif menu!");
                     List<HasilSAW> hasil = SAWCalculator.hitung(lastAlts, lastKrit);
                     new HasilDAO().simpanHasil(hasil, "Perhitungan SAW");

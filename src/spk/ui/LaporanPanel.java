@@ -42,7 +42,7 @@ public class LaporanPanel extends JPanel {
         content.setOpaque(false);
 
         content.add(buildLaporanCard("1. Laporan Data Kriteria",
-                new String[]{"ID","Nama Kriteria","Tipe","Bobot (%)"},
+                new String[]{"No","Nama Kriteria","Tipe","Bobot"},
                 this::loadKriteria));
         content.add(Box.createRigidArea(new Dimension(0, 16)));
         content.add(buildLaporanCard("2. Laporan Data Menu Makanan",
@@ -114,9 +114,15 @@ public class LaporanPanel extends JPanel {
         card.add(topRow, BorderLayout.NORTH);
         card.add(sp, BorderLayout.CENTER);
 
-        // Auto load
+        // Auto load data saat panel dibuka
         new SwingWorker<Void, Void>() {
-            @Override protected Void doInBackground() { loader.load(model); return null; }
+            @Override protected Void doInBackground() {
+                try { loader.load(model); }
+                catch (Exception ex) { ex.printStackTrace(); }
+                return null;
+            }
+            // done() kosong — error sudah ditangani di doInBackground via loader.load()
+            @Override protected void done() {}
         }.execute();
 
         return card;
@@ -129,8 +135,9 @@ public class LaporanPanel extends JPanel {
                 m.setRowCount(0);
                 int i = 1;
                 for (Kriteria k : list)
-                    m.addRow(new Object[]{k.getIdKriteria(), k.getNamaKriteria(),
-                        k.isBenefit() ? "Benefit" : "Cost", String.format("%.2f%%", k.getBobot())});
+                    // Bug fix: use sequential i++ instead of k.getIdKriteria() for No column
+                    m.addRow(new Object[]{i++, k.getNamaKriteria(),
+                        k.isBenefit() ? "Benefit" : "Cost", String.format("%.4f", k.getBobot())});
             });
         } catch (SQLException ex) { ex.printStackTrace(); }
     }
@@ -142,7 +149,8 @@ public class LaporanPanel extends JPanel {
                 m.setRowCount(0);
                 int i = 1;
                 for (Alternatif a : list)
-                    m.addRow(new Object[]{i, a.getKodeMakanan(), a.getNamaPaket(), a.getDeskripsi()});
+                    // Bug fix: add i++ so each row gets a unique sequential number
+                    m.addRow(new Object[]{i++, a.getKodeMakanan(), a.getNamaPaket(), a.getDeskripsi()});
             });
         } catch (SQLException ex) { ex.printStackTrace(); }
     }
