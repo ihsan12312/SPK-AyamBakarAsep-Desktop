@@ -186,7 +186,7 @@ public class DataPenilaianPanel extends JPanel {
                         row[0] = i++; row[1] = a.getNamaPaket();
                         for (int j = 0; j < kritList.size(); j++) {
                             double v = a.getNilai(kritList.get(j).getIdKriteria());
-                            row[2+j] = v == 0 ? "–" : String.format("%.0f", v);
+                            row[2+j] = v == 0 ? "–" : spk.ui.UITheme.formatDesimal(v);
                         }
                         tblModel.addRow(row);
                     }

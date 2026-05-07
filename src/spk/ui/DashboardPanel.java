@@ -84,7 +84,7 @@ public class DashboardPanel extends JPanel {
             @Override protected void done() {
                 lblKrit.setText(String.valueOf(nK));
                 lblAlt.setText(String.valueOf(nA));
-                lblBobot.setText(String.format("%.4f", tb));  // format desimal (misal: 0.2800)
+                lblBobot.setText(spk.ui.UITheme.formatDesimal(tb));  // format desimal (misal: 0.28)
                 lblSesi.setText(String.valueOf(nS));
                 tblModel.setRowCount(0);
                 if (riwayat != null) {
@@ -92,7 +92,7 @@ public class DashboardPanel extends JPanel {
                     for (int i = 0; i < riwayat.size(); i++) {
                         Object[] r = riwayat.get(i);
                         tblModel.addRow(new Object[]{i+1, r[1]!=null?r[1]:"–",
-                            r[3], String.format("%.4f",(double)r[4]),
+                            r[3], spk.ui.UITheme.formatDesimal((double)r[4]),
                             r[2]!=null?sdf.format(r[2]):"–"});
                     }
                 }

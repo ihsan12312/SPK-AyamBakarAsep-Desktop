@@ -101,6 +101,12 @@ public final class UITheme {
     public static Font fontPlain(float size)       { return font(Font.PLAIN, size); }
     public static Font fontItalic(float size)      { return font(Font.ITALIC, size); }
 
+    // ── Number Formatting ────────────────────────────────────────
+    public static String formatDesimal(double value) {
+        java.text.DecimalFormat df = new java.text.DecimalFormat("0.####", java.text.DecimalFormatSymbols.getInstance(java.util.Locale.US));
+        return df.format(value);
+    }
+
     // ── Paint Utilities ──────────────────────────────────────────
 
     public static void polish(Graphics2D g2) {

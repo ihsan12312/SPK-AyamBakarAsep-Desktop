@@ -31,7 +31,7 @@ public class HasilSAW {
     public void       setNilaiNormal(double[] v) { this.nilaiNormal = v; }
     public double[]   getNilaiTerbobot()         { return nilaiTerbobot; }
     public void       setNilaiTerbobot(double[] v){ this.nilaiTerbobot = v; }
-    public String     getSkorFormatted()         { return String.format("%.4f", skorAkhir); }
+    public String     getSkorFormatted()         { return spk.ui.UITheme.formatDesimal(skorAkhir); }
     public java.util.Map<Integer,Double> getNormalisasiMap()          { return normalisasiMap; }
     public void       setNormalisasiMap(java.util.Map<Integer,Double> m) { this.normalisasiMap = m; }
     public double     getNormalisasi(int idKriteria) { return normalisasiMap.getOrDefault(idKriteria, 0.0); }

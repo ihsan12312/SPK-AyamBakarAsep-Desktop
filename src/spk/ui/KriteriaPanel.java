@@ -100,11 +100,11 @@ public class KriteriaPanel extends JPanel {
                     for (Kriteria k : list)
                         tblModel.addRow(new Object[]{i++, k.getNamaKriteria(),
                             k.isBenefit() ? "Benefit ↑" : "Cost ↓",
-                            String.format("%.4f", k.getBobot()), k.getSatuan(),
+                            spk.ui.UITheme.formatDesimal(k.getBobot()), k.getSatuan(),
                             k.getKeterangan() != null ? k.getKeterangan() : "–"});
                 }
                 boolean valid = Math.abs(tb - 1) < 0.0001;
-                lblBobot.setText("  Total Bobot: " + String.format("%.4f", tb) + "   " + (valid ? "✓ Tepat 1.0" : "(bebas)"));
+                lblBobot.setText("  Total Bobot: " + spk.ui.UITheme.formatDesimal(tb) + "   " + (valid ? "✓ Tepat 1.0" : "(bebas)"));
                 lblBobot.setForeground(tb > 0 ? GREEN_700 : RED_600);
             }
         }.execute();

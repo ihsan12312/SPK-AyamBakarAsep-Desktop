@@ -136,10 +136,10 @@ public class DataKriteriaPanel extends JPanel {
                     int i = 1;
                     for (Kriteria k : list)
                         tblModel.addRow(new Object[]{i++, k.getNamaKriteria(),
-                            k.isBenefit() ? "Benefit ↑" : "Cost ↓", String.format("%.4f", k.getBobot())});
+                            k.isBenefit() ? "Benefit ↑" : "Cost ↓", spk.ui.UITheme.formatDesimal(k.getBobot())});
                 }
                 boolean valid = Math.abs(total - 1) < 0.0001;
-                lblTotal.setText("Total Bobot: " + String.format("%.4f", total) + "  " + (valid ? "✓ Tepat 1.0" : "(bebas)"));
+                lblTotal.setText("Total Bobot: " + spk.ui.UITheme.formatDesimal(total) + "  " + (valid ? "✓ Tepat 1.0" : "(bebas)"));
                 lblTotal.setForeground(total > 0 ? GREEN_700 : RED_600);
             }
         }.execute();

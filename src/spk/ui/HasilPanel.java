@@ -159,7 +159,7 @@ public class HasilPanel extends JPanel {
                     int i = 1;
                     for (Object[] r : rows) {
                         riwayatModel.addRow(new Object[]{i++, r[1] != null ? r[1] : "–",
-                            "🏆 " + r[3], String.format("%.4f", (double)r[4]),
+                            "🏆 " + r[3], spk.ui.UITheme.formatDesimal((double)r[4]),
                             r[2] != null ? sdf.format(r[2]) : "–"});
                     }
                 } catch (Exception ex) { ex.printStackTrace(); }
@@ -350,7 +350,7 @@ public class HasilPanel extends JPanel {
                 // Score label inside bar
                 if (barH > 24) {
                     g2.setFont(fontBold(10)); g2.setColor(new Color(255,255,255,230));
-                    String sc = String.format("%.4f", h.getSkorAkhir());
+                    String sc = spk.ui.UITheme.formatDesimal(h.getSkorAkhir());
                     FontMetrics fm = g2.getFontMetrics();
                     g2.drawString(sc, x + (barW - fm.stringWidth(sc)) / 2, y + 16);
                 }

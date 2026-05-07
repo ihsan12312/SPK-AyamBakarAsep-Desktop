@@ -21,6 +21,13 @@ import java.util.*;
  */
 public class SAWCalculator {
 
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+        java.math.BigDecimal bd = new java.math.BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, java.math.RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
     public static List<HasilSAW> hitung(List<Alternatif> alts, List<Kriteria> crits) {
         if (alts == null || alts.isEmpty()) throw new IllegalArgumentException("Daftar alternatif kosong.");
         if (crits == null || crits.isEmpty()) throw new IllegalArgumentException("Daftar kriteria kosong.");
@@ -49,9 +56,10 @@ public class SAWCalculator {
         for (int i = 0; i < n; i++)
             for (int j = 0; j < m; j++) {
                 double xij = X[i][j], rv = ref[j];
-                R[i][j] = crits.get(j).isBenefit()
+                double rVal = crits.get(j).isBenefit()
                     ? (rv == 0 ? 0 : xij / rv)
                     : (xij == 0 ? 0 : rv / xij);
+                R[i][j] = round(rVal, 4); // Pembulatan 4 desimal
             }
 
         // Step 4: Bobot desimal
@@ -60,13 +68,19 @@ public class SAWCalculator {
 
         // Step 5: Skor akhir Vi = Σ(Wj × Rij)
         double[] V = new double[n];
-        for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) V[i] += W[j] * R[i][j];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                double terbobotVal = round(W[j] * R[i][j], 4);
+                V[i] += terbobotVal;
+            }
+            V[i] = round(V[i], 4);
+        }
 
         // Step 6: Buat hasil + ranking
         List<HasilSAW> hasil = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             double[] terbobot = new double[m];
-            for (int j = 0; j < m; j++) terbobot[j] = W[j] * R[i][j];
+            for (int j = 0; j < m; j++) terbobot[j] = round(W[j] * R[i][j], 4);
             HasilSAW hs = new HasilSAW(0, alts.get(i), V[i], R[i].clone(), terbobot);
             // Populate normalisasiMap (id_kriteria -> nilai normalisasi)
             java.util.Map<Integer, Double> normMap = new java.util.HashMap<>();

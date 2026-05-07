@@ -137,7 +137,7 @@ public class LaporanPanel extends JPanel {
                 for (Kriteria k : list)
                     // Bug fix: use sequential i++ instead of k.getIdKriteria() for No column
                     m.addRow(new Object[]{i++, k.getNamaKriteria(),
-                        k.isBenefit() ? "Benefit" : "Cost", String.format("%.4f", k.getBobot())});
+                        k.isBenefit() ? "Benefit" : "Cost", spk.ui.UITheme.formatDesimal(k.getBobot())});
             });
         } catch (SQLException ex) { ex.printStackTrace(); }
     }

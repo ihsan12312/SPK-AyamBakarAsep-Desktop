@@ -155,7 +155,7 @@ public class PerhitunganPanel extends JPanel {
                 row[0] = h.getAlternatif().getNamaPaket();
                 for (int j = 0; j < lastKrit.size(); j++) {
                     double v = h.getAlternatif().getNilai(lastKrit.get(j).getIdKriteria());
-                    row[1+j] = String.format("%.0f", v);
+                    row[1+j] = spk.ui.UITheme.formatDesimal(v);
                 }
                 mdlAwal.addRow(row);
             }
@@ -172,7 +172,7 @@ public class PerhitunganPanel extends JPanel {
                 row[0] = h.getAlternatif().getNamaPaket();
                 for (int j = 0; j < lastKrit.size(); j++) {
                     double r = h.getNormalisasi(lastKrit.get(j).getIdKriteria());
-                    row[1+j] = String.format("%.4f", r);
+                    row[1+j] = spk.ui.UITheme.formatDesimal(r);
                 }
                 mdlNorm.addRow(row);
             }
@@ -191,10 +191,10 @@ public class PerhitunganPanel extends JPanel {
                 double vi = 0;
                 for (int j = 0; j < lastKrit.size(); j++) {
                     double wr = h.getNormalisasi(lastKrit.get(j).getIdKriteria()) * lastKrit.get(j).getBobotDesimal();
-                    row[1+j] = String.format("%.4f", wr);
+                    row[1+j] = spk.ui.UITheme.formatDesimal(wr);
                     vi += wr;
                 }
-                row[1 + lastKrit.size()] = String.format("%.4f", vi);
+                row[1 + lastKrit.size()] = spk.ui.UITheme.formatDesimal(vi);
                 mdlAkhir.addRow(row);
             }
         }
