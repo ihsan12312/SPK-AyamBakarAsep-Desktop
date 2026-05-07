@@ -16,8 +16,8 @@ public class DBConnection {
 
     private static final String DRIVER   = "com.mysql.cj.jdbc.Driver";
     private static final String URL      = "jdbc:mysql://localhost:3306/spk_ayambakar"
-                                         + "?useSSL=false&serverTimezone=Asia/Jakarta"
-                                         + "&characterEncoding=UTF-8";
+                                        + "?useSSL=false&serverTimezone=Asia/Jakarta"
+                                        + "&characterEncoding=UTF-8";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";   // sesuaikan jika ada password MySQL
 

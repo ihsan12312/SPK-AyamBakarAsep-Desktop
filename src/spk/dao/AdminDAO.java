@@ -12,10 +12,10 @@ import java.util.List;
  * Data Access Object untuk tabel tb_admin.
  */
 public class AdminDAO {
-    private final Connection conn;
+private final Connection conn;
 
     public AdminDAO() {
-        this.conn = DBConnection.getInstance().getConnection();
+    this.conn = DBConnection.getInstance().getConnection();
     }
 
     public Admin login(String username, String password) throws SQLException {

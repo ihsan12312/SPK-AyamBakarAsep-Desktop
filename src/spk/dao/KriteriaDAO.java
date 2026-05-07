@@ -20,7 +20,7 @@ public class KriteriaDAO {
     public List<Kriteria> getAll() throws SQLException {
         List<Kriteria> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM tb_kriteria ORDER BY id_kriteria ASC");
-             ResultSet rs = ps.executeQuery()) {
+            ResultSet rs = ps.executeQuery()) {
             while (rs.next()) list.add(mapRow(rs));
         }
         return list;
